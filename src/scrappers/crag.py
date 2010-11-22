@@ -29,7 +29,9 @@ class Crag(object):
         
         self.name = tree.xpath(".//h1")[0].text
         self.routes_ids = [int(route_el.get("href")[8:]) for route_el in tree.xpath("//td/a[starts-with(@href, 'c.php')]")]
+        filehandle.close()
         return [Route(id, self.id) for id in self.routes_ids]
+        
     
     def save(self, file):
         conn = sqlite3.connect(file)

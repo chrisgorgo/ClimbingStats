@@ -65,6 +65,7 @@ class Route(object):
                 else:
                     cur_com = remove_html_tags(bit)
         print self.log_entries
+        filehandle.close()
     
     def save(self, file):
         conn = sqlite3.connect(file)
