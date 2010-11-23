@@ -40,7 +40,19 @@ class Route(object):
         tree = etree.parse(StringIO(content), parser)
         
         self.name = tree.xpath(".//font[@size=5]/b")[0].text
+
+        grade_node = tree.xpath(".//td[@align='right']/b")[0]
+        grade_split = etree.tostring(grade_node, method="text").strip().split()
+
         print self.name
+        self.grade1 = grade_split[0]
+        if len(grade_split) == 2:
+            self.grade2 = grade_split[1]
+        else:
+            self.grade2 = None
+            
+        print self.grade1, self.grade2
+        
         
         log_entries = tree.xpath(".//table[@cellpadding='5']")[0]
         log_entries_text = etree.tostring(log_entries)
@@ -56,8 +68,7 @@ class Route(object):
                     continue
                 elif bit.startswith('<font color="#666666"'):
                         cur_date = find_date(bit)
-                        if cur_date != None:
-                            self.log_entries.append((cur_com, cur_date))
+                        self.log_entries.append((cur_com, cur_date))
                         cur_com = None
                         cur_date = ""
                 elif bit.startswith('Users with this climb on their wishlist are'):
@@ -70,7 +81,7 @@ class Route(object):
     def save(self, file):
         conn = sqlite3.connect(file)
         c = conn.cursor()
-        c.execute("INSERT OR REPLACE INTO routes (id, name, crag_id) VALUES (?,?,?)", (self.id, self.name, self.crag_id))
+        c.execute("INSERT OR REPLACE INTO routes (id, name, grade1, grade2, crag_id) VALUES (?,?,?,?,?)", (self.id, self.name, self.grade1, self.grade2, self.crag_id))
         c.execute("DELETE FROM logs WHERE route_id = ?", (self.id,))
         for log in self.log_entries:
             c.execute("INSERT OR REPLACE INTO logs (date, comment, route_id) VALUES (?,?,?)", (log[1], log[0], self.id))

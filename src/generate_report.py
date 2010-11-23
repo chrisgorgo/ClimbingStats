@@ -9,7 +9,7 @@ import sqlite3
 def get_logs(crags):
     conn = sqlite3.connect(os.path.abspath("ukc.db"))
     c = conn.cursor()
-    c.execute("""SELECT l.date as date, l.comment as comment , r.name as route_name, c.name as crag_name
+    c.execute("""SELECT l.date as date, l.comment as comment , r.name as route_name, r.id, c.name as crag_name,  c.id, r.grade1, r.grade2
 FROM logs l,
 routes r, crags c
 WHERE
@@ -24,7 +24,8 @@ WHERE
     return rows
 
 reports_dict = {"Cairngorms": [25, 74, 28, 3614, 3613, 32, 305, 2520],
-                "Ben Nevis": [648, 808, 645, 644, 643, 807, 641, 642, 646, 647,808, 809, 649, 10615, 10616, 3761, 9375, 650]}
+                "Ben Nevis": [648, 808, 645, 644, 643, 807, 641, 642, 646, 647,808, 809, 649, 10615, 10616, 3761, 9375, 650],
+                "Peak District": [1341, 134, 1239, 1225, 9849, 1335, 120, 148, 108, 2624, 11145]}
 
 if __name__ == '__main__':
     f = open('report.html', 'w')
@@ -40,9 +41,15 @@ if __name__ == '__main__':
         for row in rows:
             f.write("<tr>")
             f.write("<td>%s</td>"%row[0])
-            f.write("<td>%s</td>"%row[1])
-            f.write("<td>%s</td>"%row[2])
-            f.write("<td>%s</td>"%row[3])
+            f.write("<td>%s</td>"%(row[1]))
+            if row[7] != None:
+                grade = row[6] + " " + row[7]
+            elif row[6] != None:
+                grade = row[6]
+            else: 
+                grade = ""
+            f.write("<td><a href='http://www.ukclimbing.com/logbook/c.php?i=%d'>%s %s</a></td>"%( row[3], row[2], grade))
+            f.write("<td><a href=http://www.ukclimbing.com/logbook/crag.php?id=%d'>%s</a></td>"%(row[5],row[4]))
             f.write("</tr>")
         f.write("</table>")
         
