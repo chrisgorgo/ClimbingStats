@@ -17,10 +17,10 @@ if __name__ == '__main__':
         new_jobs = scrapper.scrap()
         print scrapper.name
         print scrapper.routes_ids
-        scrapper.save(os.path.abspath("ukc.db"))
+        scrapper.save(os.path.abspath("~/Dropbox/Public/ClimbingStats/ukc.db"))
         
         for job in new_jobs:
             job.scrap()
-            job.save(os.path.abspath("ukc.db"))
+            job.save(os.path.abspath("~/Dropbox/Public/ClimbingStats/ukc.db"))
         
         

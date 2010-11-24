@@ -24,7 +24,7 @@ WHERE
     return rows
 
 reports_dict = {"Cairngorms": [25, 74, 28, 3614, 3613, 32, 305, 2520],
-                "Ben Nevis": [648, 808, 645, 644, 643, 807, 641, 642, 646, 647,808, 809, 649, 10615, 10616, 3761, 9375, 650],
+                "Ben Nevis": [10064, 807, 11161, 12686, 644, 643, 642, 641, 645, 12692, 646, 647, 648, 8564, 9678, 650, 11147, 652, 2324, 649, 11565, 11144, 2340],   
                 "Peak District": [1341, 134, 1239, 1225, 9849, 1335, 120, 148, 108, 2624, 11145]}
 
 if __name__ == '__main__':
@@ -40,7 +40,7 @@ if __name__ == '__main__':
         rows = get_logs(crags)
         for row in rows:
             f.write("<tr>")
-            f.write("<td>%s</td>"%row[0])
+            f.write("<td nowrap='nowrap'>%s</td>"%row[0])
             f.write("<td>%s</td>"%(row[1]))
             if row[7] != None:
                 grade = row[6] + " " + row[7]
@@ -48,8 +48,8 @@ if __name__ == '__main__':
                 grade = row[6]
             else: 
                 grade = ""
-            f.write("<td><a href='http://www.ukclimbing.com/logbook/c.php?i=%d'>%s %s</a></td>"%( row[3], row[2], grade))
-            f.write("<td><a href=http://www.ukclimbing.com/logbook/crag.php?id=%d'>%s</a></td>"%(row[5],row[4]))
+            f.write("<td nowrap='nowrap'><a href='http://www.ukclimbing.com/logbook/c.php?i=%d'>%s %s</a></td>"%( row[3], row[2], grade))
+            f.write("<td nowrap='nowrap'><a href=http://www.ukclimbing.com/logbook/crag.php?id=%d'>%s</a></td>"%(row[5],row[4]))
             f.write("</tr>")
         f.write("</table>")
         

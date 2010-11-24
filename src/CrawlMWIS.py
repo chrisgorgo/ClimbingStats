@@ -13,4 +13,4 @@ if __name__ == '__main__':
         print area
         mwis = MWIS(area)
         mwis.scrap()
-        mwis.save(os.path.abspath("ukc.db"))
+        mwis.save(os.path.abspath("~/Dropbox/Public/ClimbingStats/ukc.db"))
