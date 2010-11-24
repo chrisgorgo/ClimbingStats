@@ -5,6 +5,7 @@ Created on 21 Nov 2010
 '''
 from scrappers import Crag
 import os
+from config import db_file
 
 if __name__ == '__main__':
     from generate_report import reports_dict
@@ -17,10 +18,10 @@ if __name__ == '__main__':
         new_jobs = scrapper.scrap()
         print scrapper.name
         print scrapper.routes_ids
-        scrapper.save(os.path.abspath("~/Dropbox/Public/ClimbingStats/ukc.db"))
+        scrapper.save(db_file)
         
         for job in new_jobs:
             job.scrap()
-            job.save(os.path.abspath("~/Dropbox/Public/ClimbingStats/ukc.db"))
+            job.save(db_file)
         
         

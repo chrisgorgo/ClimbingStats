@@ -5,6 +5,7 @@ Created on 22 Nov 2010
 '''
 from scrappers import MWIS
 import os
+from config import db_file
 if __name__ == '__main__':
     
     areas = ['nw', 'wh', 'eh', 'sh', 'su', 'ld', 'sd', 'pd']
@@ -13,4 +14,4 @@ if __name__ == '__main__':
         print area
         mwis = MWIS(area)
         mwis.scrap()
-        mwis.save(os.path.abspath("~/Dropbox/Public/ClimbingStats/ukc.db"))
+        mwis.save(db_file)
