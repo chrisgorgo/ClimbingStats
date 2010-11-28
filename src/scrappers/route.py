@@ -6,7 +6,6 @@ Created on 21 Nov 2010
 import urllib2, re
 from lxml import etree
 from StringIO import StringIO
-import sqlite3
 from datetime import datetime
 
 def remove_html_tags(data):
@@ -43,15 +42,11 @@ class Route(object):
 
         grade_node = tree.xpath(".//td[@align='right']/b")[0]
         grade_split = etree.tostring(grade_node, method="text").strip().split()
-
-        print self.name
         self.grade1 = grade_split[0]
         if len(grade_split) == 2:
             self.grade2 = grade_split[1]
         else:
             self.grade2 = None
-            
-        print self.grade1, self.grade2
         
         
         log_entries = tree.xpath(".//table[@cellpadding='5']")[0]
@@ -75,16 +70,11 @@ class Route(object):
                     break
                 else:
                     cur_com = remove_html_tags(bit)
-        print self.log_entries
         filehandle.close()
     
-    def save(self, file):
-        conn = sqlite3.connect(file)
-        c = conn.cursor()
+    def save(self, c):
         c.execute("INSERT OR REPLACE INTO routes (id, name, grade1, grade2, crag_id) VALUES (?,?,?,?,?)", (self.id, self.name, self.grade1, self.grade2, self.crag_id))
         c.execute("DELETE FROM logs WHERE route_id = ?", (self.id,))
         for log in self.log_entries:
             c.execute("INSERT OR REPLACE INTO logs (date, comment, route_id) VALUES (?,?,?)", (log[1], log[0], self.id))
-        conn.commit()
-        conn.close()
         

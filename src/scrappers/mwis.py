@@ -1,9 +1,8 @@
 import urllib2
 from lxml import etree
 from StringIO import StringIO
-import sqlite3
 from datetime import datetime
-import os
+
 
 class MWIS(object):
     '''
@@ -29,7 +28,7 @@ class MWIS(object):
             node = nodes[i]
             i+=1
             if node.text and node.text.startswith("Viewing forecast for ") and node.tag == "h5":
-                self.date = datetime.strptime(node.text[len("Viewing forecast for "):].replace("st","").replace("nd","").replace("rd","").replace("th", ""), "%A, %d %B, %Y")
+                self.date = datetime.strptime(node.text[len("Viewing forecast for "):].replace("st","").replace("nd","").replace("rd","").replace("th", "").replace("Suay","Sunday").replace("Satuay", "Saturday"), "%A, %d %B, %Y")
                 break
             
         while i < len(nodes):
@@ -114,11 +113,7 @@ class MWIS(object):
                 break
         filehandle.close()
         
-    def save(self,file):
-        conn = sqlite3.connect(file)
-        c = conn.cursor()
+    def save(self,c):
         c.execute("""INSERT OR REPLACE INTO forecasts 
         (area_id, date, headline, how_windy, effect_of_wind, how_wet, cloud_on_the_hills, cloud_free_munros, clarity, how_cold, freezing_level) 
         VALUES (?,?,?, ?,?,?, ?,?,?, ?, ?)""", (self.id, self.date, self.headline, self.how_windy, self.effect_of_wind, self.how_wet, self.cloud_on_the_hills, self.cloud_free_munros, self.clarity, self.how_cold, self.freezing_level))
-        conn.commit()
-        conn.close()

@@ -6,7 +6,6 @@ Created on 21 Nov 2010
 import urllib2
 from lxml import etree
 from StringIO import StringIO
-import sqlite3
 from route import Route
 
 class Crag(object):
@@ -33,10 +32,6 @@ class Crag(object):
         return [Route(id, self.id) for id in self.routes_ids]
         
     
-    def save(self, file):
-        conn = sqlite3.connect(file)
-        c = conn.cursor()
+    def save(self, c):
         c.execute("INSERT OR REPLACE INTO crags (id, name) VALUES (?,?)", (self.id, self.name))
-        conn.commit()
-        conn.close()
         

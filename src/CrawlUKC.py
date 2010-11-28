@@ -6,6 +6,7 @@ Created on 21 Nov 2010
 from scrappers import Crag
 import os
 from config import db_file
+import sqlite3
 
 if __name__ == '__main__':
     from generate_report import reports_dict
@@ -13,15 +14,16 @@ if __name__ == '__main__':
     for crags in reports_dict.values():
         crags_to_crawl += crags
     
+    conn = sqlite3.connect(db_file)
+    c = conn.cursor()
     for crag_id in crags_to_crawl:
         scrapper = Crag(id=crag_id)
         new_jobs = scrapper.scrap()
-        print scrapper.name
-        print scrapper.routes_ids
-        scrapper.save(db_file)
+        scrapper.save(c)
         
         for job in new_jobs:
             job.scrap()
-            job.save(db_file)
+            job.save(c)
         
-        
+    conn.commit()
+    conn.close()
