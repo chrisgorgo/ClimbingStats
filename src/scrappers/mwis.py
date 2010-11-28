@@ -28,7 +28,7 @@ class MWIS(object):
             node = nodes[i]
             i+=1
             if node.text and node.text.startswith("Viewing forecast for ") and node.tag == "h5":
-                self.date = datetime.strptime(node.text[len("Viewing forecast for "):].replace("st","").replace("nd","").replace("rd","").replace("th", "").replace("Suay","Sunday").replace("Satuay", "Saturday"), "%A, %d %B, %Y")
+                self.date = datetime.strptime(node.text[len("Viewing forecast for "):].replace("st","").replace("nd","").replace("rd","").replace("th", "").replace("Suay","Sunday").replace("Satuay", "Saturday").replace("Moay", "Monday"),  "%A, %d %B, %Y")
                 break
             
         while i < len(nodes):
