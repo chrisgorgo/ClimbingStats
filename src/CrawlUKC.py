@@ -4,9 +4,9 @@ Created on 21 Nov 2010
 @author: Filo
 '''
 from scrappers import Crag
-import os
 from config import db_file
 import sqlite3
+import generate_report
 
 if __name__ == '__main__':
     from generate_report import reports_dict
@@ -27,3 +27,5 @@ if __name__ == '__main__':
         
     conn.commit()
     conn.close()
+    
+    generate_report.generate_report(reports_dict)

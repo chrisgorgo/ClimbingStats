@@ -39,7 +39,6 @@ class Route(object):
         tree = etree.parse(StringIO(content), parser)
         
         self.name = tree.xpath(".//font[@size=5]/b")[0].text
-        print self.name
         grade_node = tree.xpath(".//td[@align='right']/b")[0]
         grade_split = etree.tostring(grade_node, method="text").strip().split()
         self.grade1 = grade_split[0]
@@ -70,7 +69,6 @@ class Route(object):
                     break
                 else:
                     cur_com = remove_html_tags(bit)
-        print self.log_entries
         filehandle.close()
     
     def save(self, c):
