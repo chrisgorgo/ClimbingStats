@@ -39,7 +39,7 @@ class Route(object):
         tree = etree.parse(StringIO(content), parser)
         
         self.name = tree.xpath(".//font[@size=5]/b")[0].text
-
+        print self.name
         grade_node = tree.xpath(".//td[@align='right']/b")[0]
         grade_split = etree.tostring(grade_node, method="text").strip().split()
         self.grade1 = grade_split[0]
@@ -56,20 +56,21 @@ class Route(object):
             self.log_entries = []
         else:
             self.log_entries = []
-            for bit in log_entries_text.split("<br />")[1:]:
+            for bit in log_entries_text.split("<br />"):
                 if bit.startswith("<img src="):
                     cur_com = None
                     cur_date = ""
                     continue
-                elif bit.startswith('<font color="#666666"'):
+                elif bit.find('<font color="#666666"') != -1:
                         cur_date = find_date(bit)
                         self.log_entries.append((cur_com, cur_date))
                         cur_com = None
                         cur_date = ""
-                elif bit.startswith('Users with this climb on their wishlist are'):
+                elif bit.find('Users with this climb on their wishlist are') != -1:
                     break
                 else:
                     cur_com = remove_html_tags(bit)
+        print self.log_entries
         filehandle.close()
     
     def save(self, c):
