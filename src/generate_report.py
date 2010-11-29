@@ -32,7 +32,8 @@ def generate_report(reports_dict):
             f.write("</tr>")
         
         f.write("</table>")
-        f.write("<p>Report generated on %s"%str(datetime.datetime.now()))
+        
+    f.write("<p>Report generated on %s</p>"%str(datetime.datetime.now()))
     
     f.write("""<script type="text/javascript">
 
