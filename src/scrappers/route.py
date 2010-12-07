@@ -55,6 +55,10 @@ class Route(object):
             self.log_entries = []
         else:
             self.log_entries = []
+            cur_com = None
+            cur_date = ""
+            log_entries_text = re.sub("This climb is in \d+ logbook[s]*, and on .* wishlist[s]*.", "", log_entries_text)
+            log_entries_text = log_entries_text.replace("PUBLIC&#160;LOGBOOKS","")
             for bit in log_entries_text.split("<br />"):
                 if bit.startswith("<img src="):
                     cur_com = None
